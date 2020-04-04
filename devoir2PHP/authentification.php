@@ -35,37 +35,36 @@ function is_valid_email($mail)
             
     }
  
-
-is_valid_email($_POST["email"]);
+$email=$_POST["email"];
+$password=$_POST['password'];
+is_valid_email($email);
 echo "<br>";
-validpassword($_POST['password']);   
-
+validpassword($password);   
+echo "<br><br>";
 $myfile = fopen("login.txt", "r") or die("Unable to open file!");
 $exist = false;
-$passMatch = false;
+$pass = false;
 while (!feof($myfile)) {
-    $array = str_split(fgets($myfile));
+    $array = explode('|',fgets($myfile));
     if ($array[0] == $email) {
         $exist = true;
 
         if (preg_replace('<\s+>', '', $array[1]) == $password) {
-            $passMatch = true;
+            $pass = true;
         }
     }
 }
+fclose($myfile);
 if ($exist) {
-    if ($passMatch) {
-        
-        echo 'auth success';
+    if ($pass) {
+    
+        echo 'Authentification réussi';
     } else {
         
-        echo 'pass false';
+        echo 'Mot de passe invalide';
     }
 } else {
     
-    echo 'user doesn\'t exist';
+    echo 'Login inexistant ';
 }
-
-
-fclose($myfile);
 ?>
